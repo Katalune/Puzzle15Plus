@@ -1,0 +1,17 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Elements size in level fragment. -->
+    <dimen name="level_button_size">96dp</dimen>
+    <dimen name="level_column_width">106dp</dimen>
+    <dimen name="level_text_size">36dp</dimen>
+
+    <dimen name="score_level_size">48dp</dimen>
+
+    <!-- Board margin. -->
+    <dimen name="game_horizontal_margin">8dp</dimen>
+
+    <!-- Drawer list width. -->
+    <dimen name="menu_width">250dp</dimen>
+</resources>

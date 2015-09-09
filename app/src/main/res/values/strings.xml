@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Puzzle 15 Plus</string>
+
+    <string name="drawer_open" translatable="false">Open drawer</string>
+    <string name="drawer_close" translatable="false">Close drawer</string>
+
+    <string name="steps_label">MOVES</string>
+    <string name="time_label">TIME</string>
+
+    <string name="g_not_found">"Google+ wasn't found :("</string>
+    <string name="highscores_title">Click on a Record to See the Winning Gameboard</string>
+    <string name="level_title">Wins Unlock Next Level</string>
+    <string name="startgame_title">Tap Screen Below to Start Play</string>
+
+    <string name="view_gameboard">View this gameboard via:</string>
+
+    <string name="greet_button_positive">New Game</string>
+    <string name="greet_button_negative">Next Level</string>
+    <string name="greet_level">"Level "</string>
+    <string name="greet_highscore">\nNew\nHighscore!!\n</string>
+    <string name="best_result">Best Result:\n</string>
+    <string name="your_result">\n\nYour Result:\n</string>
+
+
+    <string-array name="titles">
+        <item>Game</item>
+        <item>Highscores</item>
+        <item>Levels</item>
+        <item>Close</item>
+    </string-array>
+
+    <plurals name="timeToSolvePuzzle">
+        <item quantity="one">I solved this puzzle in less than minute!</item>
+        <item quantity="other">I solved this puzzle in less than %d minutes!</item>
+    </plurals>
+
+</resources>

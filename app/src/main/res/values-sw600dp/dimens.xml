@@ -1,0 +1,6 @@
+<resources>
+    <!-- Elements size in level fragment. -->
+    <dimen name="level_button_size">160dp</dimen>
+    <dimen name="level_column_width">180dp</dimen>
+    <dimen name="level_text_size">48dp</dimen>
+</resources>

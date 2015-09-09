@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Пятнашки Плюс</string>
+
+    <string name="steps_label">ШАГИ</string>
+    <string name="time_label">ВРЕМЯ</string>
+
+    <string name="g_not_found">"Google+ не найден :("</string>
+    <string name="highscores_title">Для просмотра выигранной доски, выберите уровень</string>
+    <string name="level_title">Выигрывайте и открывайте новые уровни</string>
+    <string name="startgame_title">Нажмите на экран, чтобы начать игру</string>
+
+    <string name="view_gameboard">Посмотреть с помощью:</string>
+
+    <string name="greet_button_positive">Новая игра</string>
+    <string name="greet_button_negative">Сложнее!</string>
+    <string name="greet_level">"Уровень "</string>
+    <string name="greet_highscore">\nНовый\nРекорд!!\n</string>
+    <string name="best_result">Рекорд:\n</string>
+    <string name="your_result">\n\nPезультат:\n</string>
+
+    <string-array name="titles">
+        <item>Игра</item>
+        <item>Рекорды</item>
+        <item>Уровни</item>
+        <item>Закрыть</item>
+    </string-array>
+
+    <plurals name="timeToSolvePuzzle">
+        <item quantity="one">Решено меньше, чем за %d минуту!</item>
+        <item quantity="few">Решено меньше, чем за %d минуты!</item>
+        <item quantity="many">Решено меньше, чем за %d минут!</item>
+
+    </plurals>
+
+</resources>

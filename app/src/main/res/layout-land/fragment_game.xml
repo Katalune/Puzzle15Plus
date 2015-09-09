@@ -1,0 +1,85 @@
+<ua.pp.kata.puzzle15plus.SlideLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/game_horizontal_margin">
+
+        <LinearLayout
+            android:id="@+id/timerLayout"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="16dp" />
+        <TextView
+            android:id="@+id/time_label"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/time_label"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/steps"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="steps"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/steps_label"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/steps_label"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/buttonsLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:baselineAligned="false">
+
+            <ImageButton
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/pause"
+                android:src="@drawable/color_stop"
+                android:background="@null"
+                android:layout_gravity="bottom"
+                android:gravity="start"/>
+
+            <View
+                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/restart"
+                android:src="@drawable/color_replay"
+                android:background="@null"
+                android:layout_gravity="bottom"
+                android:gravity="end"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/boardLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</ua.pp.kata.puzzle15plus.SlideLinearLayout>
