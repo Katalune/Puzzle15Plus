@@ -1,19 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "ua.pp.kata.puzzle15plus"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 24
         versionCode 6
         versionName "1.4"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -21,6 +22,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.google.android.gms:play-services-plus:7.5.0'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.google.android.gms:play-services-plus:9.4.0'
+    compile 'com.android.support:design:24.1.1'
 }

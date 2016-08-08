@@ -21,6 +21,11 @@
     <string name="best_result">Best Result:\n</string>
     <string name="your_result">\n\nYour Result:\n</string>
 
+    <string name="nav_1">Game</string>
+    <string name="nav_2">Highscores</string>
+    <string name="nav_3">Levels</string>
+    <string name="nav_4">Close</string>
+
 
     <string-array name="titles">
         <item>Game</item>

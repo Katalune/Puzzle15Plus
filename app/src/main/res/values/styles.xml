@@ -3,6 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
     </style>
 
     <style name="scoreItem">
@@ -19,8 +22,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">@dimen/abc_text_size_headline_material</item>
         <item name="android:padding">@dimen/activity_vertical_margin</item>
-        <item name="android:background">#0AA68C</item>
+        <item name="android:background">@color/color_accent</item>
         <item name="android:textColor">#FCFBF7</item>
     </style>
-
 </resources>

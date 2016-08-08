@@ -18,6 +18,11 @@
     <string name="best_result">Рекорд:\n</string>
     <string name="your_result">\n\nPезультат:\n</string>
 
+    <string name="nav_1">Игра</string>
+    <string name="nav_2">Рекорды</string>
+    <string name="nav_3">Уровни</string>
+    <string name="nav_4">Закрыть</string>
+
     <string-array name="titles">
         <item>Игра</item>
         <item>Рекорды</item>

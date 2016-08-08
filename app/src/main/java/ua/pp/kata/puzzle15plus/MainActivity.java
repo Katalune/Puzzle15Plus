@@ -1,37 +1,24 @@
 package ua.pp.kata.puzzle15plus;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import ua.pp.kata.puzzle15plus.game.GameFragment;
 
-public class MainActivity extends Activity implements GameFragment.GameFragmentListener, LevelFragment.LevelFragmentListener{
+public class MainActivity extends AppCompatActivity implements GameFragment.GameFragmentListener, LevelFragment.LevelFragmentListener {
     public static final String CUR_DIM = "current_dimension";
     public static final String MAX_DIM = "max_dimension";
     private static final String TITLE = "title";
-    private String[] mTitles;
-    private Integer[] mIcons = {
-            R.drawable.ic_1_color,
-            R.drawable.ic_2_color,
-            R.drawable.ic_3_color,
-            R.drawable.ic_5_color
-    };
-    private ActionBarDrawerToggle mDrawerToggle;
-    private  ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -39,6 +26,12 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
+        // Enable the "home" button in the corner of the action bar
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         FragmentManager fm = getFragmentManager();
         // find the retained fragment on activity restart
@@ -48,52 +41,68 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
             retainedFragment = new RetainedFragment();
             fm.beginTransaction().add(retainedFragment, RetainedFragment.TAG).commit();
         }
-        // load list of menu titles
-        mTitles = this.getResources().getStringArray(R.array.titles);
 
         // Set up member variables
-        mDrawerList = (ListView) findViewById(R.id.drawer_frame);
+        NavigationView drawerList = (NavigationView) findViewById(R.id.drawer_frame);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Set up drawer's list view and click listener
-        mDrawerList.setAdapter(new DrawerListAdapter(this, mTitles, mIcons));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        // Enable the "home" button in the corner of the action bar
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        // The ActionBarDrawerToggle implements DrawerLayout.DrawerListener, but it also facilitates
-        // the proper interaction behavior between the action bar icon and the navigation drawer
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, R.drawable.ic_menu, R.string.drawer_open, R.string.drawer_close) {
+        drawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onDrawerClosed(View drawerView) {
-                ActionBar actionBar = getActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(getTitle());
-                }
+            public boolean onNavigationItemSelected(MenuItem item) {
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                selectItem(item.getItemId());
+                return true;
             }
+        });
 
+        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close
+        ) {
             @Override
             public void onDrawerOpened(View drawerView) {
-                ActionBar actionBar = getActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(R.string.app_name);
+                if (setTitle()) {
+                    invalidateOptionsMenu();
                 }
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if (setTitle()) {
+                    invalidateOptionsMenu();
+                }
+                super.onDrawerClosed(drawerView);
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
 
         // Select item by default
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(R.id.nav_item_1);
         } else {
             setTitle(savedInstanceState.getCharSequence(TITLE));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Save current title
@@ -101,37 +110,6 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence(TITLE, getTitle());
-    }
-
-    /* Menu methods */
-
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (mDrawerLayout.isDrawerVisible(mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
-        } else {
-            mDrawerLayout.openDrawer(GravityCompat.START);
-        }
-
-        return super.onMenuOpened(featureId, menu);
-    }
-
-    @Override
-    public void onOptionsMenuClosed(Menu menu) {
-        mDrawerLayout.closeDrawer(mDrawerList);
-        super.onOptionsMenuClosed(menu);
-    }
-
-    // We don't inflate the menu because additional items are not needed
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action buttons if any in this part
-        return super.onOptionsItemSelected(item);
     }
 
     // GameFragmentListener methods
@@ -142,7 +120,7 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
         args.putInt(GameFragment.STATE_INDEX, GameFragment.GAME_STATE); // start game
         fragment.setArguments(args);
 
-        ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
@@ -157,7 +135,7 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
 
     @Override
     public void onPauseGameButtonClick() {
-        ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.show();
         }
@@ -167,38 +145,17 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
     // open start game screen after choosing new level
     @Override
     public void onLevelButtonClick() {
-        selectItem(0);
+        selectItem(R.id.nav_item_1);
+        setTitle();
+    }
+
+    private boolean setTitle() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getTitle());
+            return true;
         }
-    }
-
-    /* The click listener for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    } 
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        return false;
     }
 
     /**
@@ -209,22 +166,25 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
         Fragment fragment = new Fragment();
 
         switch(position) {
-            case 0:
+            case R.id.nav_item_1:
                 // Game
                 fragment = new GameFragment();
                 Bundle args = new Bundle();
                 args.putInt(GameFragment.STATE_INDEX, GameFragment.START_STATE);
                 fragment.setArguments(args);
+                setTitle(getString(R.string.nav_1));
                 break;
-            case 1:
+            case R.id.nav_item_2:
                 // Highscores
                 fragment = new ScoreboardFragment();
+                setTitle(getString(R.string.nav_2));
                 break;
-            case 2:
+            case R.id.nav_item_3:
                 // Levels
                 fragment = new LevelFragment();
+                setTitle(getString(R.string.nav_3));
                 break;
-            case 3:
+            case R.id.nav_item_4:
                 // We have one activity, so this will close the app.
                 finish();
         }
@@ -236,12 +196,5 @@ public class MainActivity extends Activity implements GameFragment.GameFragmentL
                         R.animator.menu_come_in, R.animator.menu_come_out)
                 .replace(R.id.content_frame, fragment)
                 .commit();
-
-        // update selected item in the drawer
-        mDrawerList.setItemChecked(position, true);
-        // update actionbar title
-        setTitle(mTitles[position]);
-        // close the drawer
-        mDrawerLayout.closeDrawer(mDrawerList);
     }
 }
