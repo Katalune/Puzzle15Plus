@@ -19,16 +19,14 @@ import ua.pp.kata.puzzle15plus.R;
  */
 public class GameGUI {
     public static final int ANIM_MILLIS = 400;
-    private int mBoardSize;
-
-    private Constants mConstants;
-
     private final LinearLayout mMainLayout; // Main container
     private final LinearLayout mTimerLayout;
     private final RelativeLayout mBoardLayout;
-    private Button[] mTiles; // Tiles (mTiles[i] represent tile with number i
-    private float[][] mBoardPalette; // defines color in HSB format (3 columns) for all tiles.
     private final TextView mStepsView;
+    private int mBoardSize;
+    private Constants mConstants;
+    private View[] mTiles; // Tiles (mTiles[i] represent tile with number i
+    private float[][] mBoardPalette; // defines color in HSB format (3 columns) for all tiles.
 
 
     /**
@@ -128,6 +126,12 @@ public class GameGUI {
         setBoardPalette(newPalette);
     }
 
+    /**
+     * @return hsb of board tiles.
+     */
+    float[][] getBoardPalette() {
+        return mBoardPalette;
+    }
 
     /**
      * Set custom board palette
@@ -135,13 +139,6 @@ public class GameGUI {
      */
     private void setBoardPalette(float[][] palette) {
         mBoardPalette = palette;
-    }
-
-    /**
-     * @return hsb of board tiles.
-     */
-    float[][] getBoardPalette() {
-        return mBoardPalette;
     }
 
     /**
@@ -239,33 +236,28 @@ public class GameGUI {
 
         // screen const
         final float dpTOpx;
-        int screenWidth_DP;
-        int screenHeight_DP;
-
         // board const
         final float board_scale;
         final float boardWidth_DP;
         final int topBoardMargin_PX;
         final int leftBoardMargin_PX;
-
         // tile const
         final int proportion;
         final float tileMargin_DP;
         final int tileSize_PX;
         final float tileTextSize_DP;
-
         // timer const
         final float timerTextSize_DP;
         final int timerMargin_PX;
         final int timerPadding_PX;
-
+        // label const
+        final float labelTextSize_DP;
         // gui layout parameters
         private final LinearLayout.LayoutParams boardParams;
         private final LinearLayout.LayoutParams timerParams;
         private final RelativeLayout.LayoutParams tileParams;
-
-        // label const
-        final float labelTextSize_DP;
+        int screenWidth_DP;
+        int screenHeight_DP;
 
         Constants(Context context) {
 
