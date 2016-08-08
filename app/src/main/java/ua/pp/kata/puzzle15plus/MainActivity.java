@@ -19,12 +19,14 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     public static final String CUR_DIM = "current_dimension";
     public static final String MAX_DIM = "max_dimension";
     private static final String TITLE = "title";
+    private static final String HIDDEN = "is_toolbar_hidden";
     private DrawerLayout mDrawerLayout;
+    private boolean isHidden = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Enable the "home" button in the corner of the action bar
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -87,7 +89,11 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
         if (savedInstanceState == null) {
             selectItem(R.id.nav_item_1);
         } else {
-            setTitle(savedInstanceState.getCharSequence(TITLE));
+            if (savedInstanceState.getBoolean(HIDDEN)) {
+                hideTitle();
+            } else {
+                setTitle(savedInstanceState.getCharSequence(TITLE));
+            }
         }
     }
 
@@ -110,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence(TITLE, getTitle());
+        outState.putBoolean(HIDDEN, isHidden);
     }
 
     // GameFragmentListener methods
@@ -120,10 +127,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
         args.putInt(GameFragment.STATE_INDEX, GameFragment.GAME_STATE); // start game
         fragment.setArguments(args);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+        hideTitle();
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.animation_come_in, R.animator.animation_come_out,
@@ -135,11 +139,24 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
 
     @Override
     public void onPauseGameButtonClick() {
+        showTitle();
+        getFragmentManager().popBackStack();
+    }
+
+    private void hideTitle() {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+            isHidden = true;
+        }
+    }
+
+    private void showTitle() {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.show();
+            isHidden = false;
         }
-        getFragmentManager().popBackStack();
     }
 
     // open start game screen after choosing new level
