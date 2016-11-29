@@ -19,15 +19,8 @@ import ua.pp.kata.puzzle15plus.R;
 public class GreetingDialogFragment extends DialogFragment {
     private GreetingDialogListener mListener;
 
-    public interface GreetingDialogListener {
-        void onCreate(TextView title, TextView score, ImageView reward);
-        void onPositiveButtonClick();
-        void onNegativeButtonClick();
-        void onCancel();
-    }
-
     private static GameController findHost(Activity activity) {
-        return ((GameFragment)(activity.getFragmentManager().findFragmentById(R.id.content_frame))).getGameController();
+        return ((GameActivity) activity).getGameController();
     }
 
     @Override
@@ -94,15 +87,20 @@ public class GreetingDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
         if (mListener != null) {
             mListener.onCancel();
         }
+    }
+
+    public interface GreetingDialogListener {
+        void onCreate(TextView title, TextView score, ImageView reward);
+
+        void onPositiveButtonClick();
+
+        void onNegativeButtonClick();
+
+        void onCancel();
     }
 }

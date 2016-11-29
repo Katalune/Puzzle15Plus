@@ -2,34 +2,26 @@ package ua.pp.kata.puzzle15plus.game;
 
 import java.io.Serializable;
 
-import ua.pp.kata.puzzle15plus.RetainedFragment;
+import ua.pp.kata.puzzle15plus.StorageUtils;
 
 /**
  * Store game data for GameFragment on configuration changes.
  */
-public class GameData implements Serializable, RetainedFragment.Loadable {
+public class GameData implements Serializable, StorageUtils.Loadable {
+    static boolean exists = false;
     private static GameModel gameModel;
     private static float[][] gamePalette;
     private static long gameTime;
-    public static boolean exists = false;
-
+    private boolean mExists;
     private GameModel mGameModel;
     private float[][] mGamePalette;
     private long mGameTime;
-    public boolean mExists;
 
-    public GameData() {
+    GameData() {
         mGameModel = gameModel;
         mGamePalette = gamePalette;
         mGameTime = gameTime;
         mExists = exists;
-    }
-
-    public void load() {
-        gameModel = mGameModel;
-        gamePalette = mGamePalette;
-        gameTime = mGameTime;
-        exists = mExists;
     }
 
     /**
@@ -55,5 +47,12 @@ public class GameData implements Serializable, RetainedFragment.Loadable {
 
     static long getGameTime() {
         return gameTime;
+    }
+
+    public void load() {
+        gameModel = mGameModel;
+        gamePalette = mGamePalette;
+        gameTime = mGameTime;
+        exists = mExists;
     }
 }

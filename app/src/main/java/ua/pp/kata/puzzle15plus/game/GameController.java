@@ -24,14 +24,14 @@ import java.util.Calendar;
 import ua.pp.kata.puzzle15plus.Highscores;
 import ua.pp.kata.puzzle15plus.MainActivity;
 import ua.pp.kata.puzzle15plus.R;
-import ua.pp.kata.puzzle15plus.RetainedFragment;
+import ua.pp.kata.puzzle15plus.StorageUtils;
 
 /**
  * Create game view and game model. Set OnTouchListeners on board tiles and timer.
  */
-public class GameController implements GreetingDialogFragment.GreetingDialogListener,
+class GameController implements GreetingDialogFragment.GreetingDialogListener,
         View.OnTouchListener {
-    public static final String GREETING = "greeting";
+    static final String GREETING = "greeting";
     private GameModel mBoard;
     private GameGUI mGui;
     private int mDimension;
@@ -50,7 +50,7 @@ public class GameController implements GreetingDialogFragment.GreetingDialogList
      * @param time time spent in game previously.
      * @param palette game palette (hsb).
      */
-    public GameController(Context context, GameModel model, long time, float[][] palette) {
+    GameController(Context context, GameModel model, long time, float[][] palette) {
         this.mContext = context;
         mBoard = model;
         mDimension = model.getBoard().length;
@@ -66,7 +66,7 @@ public class GameController implements GreetingDialogFragment.GreetingDialogList
      * @param context game context.
      * @param dim game board dimension.
      */
-    public GameController(Context context, int dim) {
+    GameController(Context context, int dim) {
         this.mContext = context;
         mDimension = dim;
         mBoard = new GameModel(mDimension);
@@ -78,7 +78,7 @@ public class GameController implements GreetingDialogFragment.GreetingDialogList
 
     private void init() {
         mGui.setSteps(mBoard.getStepsNumber());
-        mSharedPref = ((Activity) mContext).getPreferences(Context.MODE_PRIVATE);
+        mSharedPref = StorageUtils.getPrefs(mContext);
         mStartTime = SystemClock.uptimeMillis() - mSpentTime; // add to the whole period previous time
         RelativeLayout boardLayout = (RelativeLayout) mGui.getMainLayout().findViewById(R.id.boardLayout);
         for (int i = 0, size = boardLayout.getChildCount(); i < size; i++) {
@@ -283,7 +283,7 @@ public class GameController implements GreetingDialogFragment.GreetingDialogList
         return false;
     }
 
-   public void onClick(View v) {
+    private void onClick(View v) {
         switch (v.getId()) {
             case R.id.restart:
                 v.animate().rotationBy(-360);
@@ -323,7 +323,7 @@ public class GameController implements GreetingDialogFragment.GreetingDialogList
                             public void run() {
                                 Bitmap screenshot = takeScreenshot();
                                 if (screenshot != null && !screenshot.isRecycled()) {
-                                    RetainedFragment.writeImage(mContext, screenshot, "level" + mDimension + ".png");
+                                    StorageUtils.writeImage(mContext, screenshot, "level" + mDimension + ".png");
                                 }
                             }
                         }, GameGUI.ANIM_MILLIS);

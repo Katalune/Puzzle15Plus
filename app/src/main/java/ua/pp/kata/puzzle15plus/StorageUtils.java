@@ -1,10 +1,9 @@
 package ua.pp.kata.puzzle15plus;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,33 +19,26 @@ import ua.pp.kata.puzzle15plus.game.GameData;
  * Retained fragment to upload data only once during its creation.
  * Also includes methods to save information to internal storage.
  */
-public class RetainedFragment extends Fragment {
+public class StorageUtils {
 
-    public static final String TAG = "retained";
     public static final String SCOREBOARD_FILENAME = "scoreboard";
     public static final String  GAMEDATA_FILENAME = "gamedata";
+    private static final String PREFS_KEY = "ua.pp.kata.puzzle15plus";
 
-    public interface Loadable {
-        void load();
+    public static void loadData(Context context) {
+        readObject(context, null, StorageUtils.SCOREBOARD_FILENAME);
+        readObject(context, null, StorageUtils.GAMEDATA_FILENAME);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // retain this fragment
-        setRetainInstance(true);
+    public static void saveData(Context context, Highscores highscores, GameData gameData) {
 
-        Highscores highscores = null;
-        readObject(highscores, SCOREBOARD_FILENAME);
-        GameData data = null;
-        readObject(data, GAMEDATA_FILENAME);
     }
 
-    private void readObject(Loadable object, String filename) {
+    private static void readObject(Context context, Loadable object, String filename) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = getActivity().openFileInput(filename);
+            fis = context.openFileInput(filename);
             ois = new ObjectInputStream(fis);
             object = (Loadable) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -119,6 +111,14 @@ public class RetainedFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static SharedPreferences getPrefs(Context context) {
+        return context.getSharedPreferences(StorageUtils.PREFS_KEY, Context.MODE_PRIVATE);
+    }
+
+    public interface Loadable {
+        void load();
     }
 
 }

@@ -28,10 +28,6 @@ public class LevelFragment extends Fragment {
     private SharedPreferences mSharedPref;
     private float[][] mLevelsPalette;
 
-    public interface LevelFragmentListener {
-        void onLevelButtonClick();
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -46,7 +42,7 @@ public class LevelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         LinearLayout main = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.fragment_levels, null);
-        mSharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        mSharedPref = StorageUtils.getPrefs(getActivity());
         int maxLevel = mSharedPref.getInt(MainActivity.MAX_DIM, GameFragment.DEF_DIM);
         mCurLevel = mSharedPref.getInt(MainActivity.CUR_DIM, GameFragment.DEF_DIM);
 
@@ -67,6 +63,10 @@ public class LevelFragment extends Fragment {
         for(int i = begin; i <= end; list.add(i++));
 
         return list;
+    }
+
+    public interface LevelFragmentListener {
+        void onLevelButtonClick();
     }
 
     private class LevelAdapter extends ArrayAdapter<Integer> implements AdapterView.OnItemClickListener {

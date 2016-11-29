@@ -26,7 +26,6 @@
     <string name="nav_3">Levels</string>
     <string name="nav_4">Close</string>
 
-
     <string-array name="titles">
         <item>Game</item>
         <item>Highscores</item>

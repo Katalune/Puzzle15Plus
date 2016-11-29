@@ -8,16 +8,12 @@ import java.util.Date;
 /**
  * Stores score result
  */
-public class Highscores implements Serializable, RetainedFragment.Loadable{
+public class Highscores implements Serializable, StorageUtils.Loadable {
     private static ArrayList<Score> table;
     private ArrayList<Score> mTable;
 
     public Highscores() {
         mTable = table;
-    }
-
-    public void load() {
-       table = mTable;
     }
 
     /**
@@ -79,6 +75,10 @@ public class Highscores implements Serializable, RetainedFragment.Loadable{
         return table;
     }
 
+    public void load() {
+        table = mTable;
+    }
+
     public static class Score implements Comparable<Score>, Serializable {
         private Date mDate;
         private int[] mTime; // time[0] - minutes, time[1] - seconds spent in game
@@ -100,6 +100,22 @@ public class Highscores implements Serializable, RetainedFragment.Loadable{
         }
 
         /**
+         * Convert time to  string.
+         * @param time_array [0] - minutes, [1] - seconds.
+         * @return string "*minutes*m *seconds*s".
+         */
+        public static String TimeToText(int[] time_array) {
+            String time = "";
+            if (time_array[0] != 0) {
+                time += String.valueOf(time_array[0]) + "m ";
+            }
+            if (time_array[1] != 0) {
+                time += String.valueOf(time_array[1]) + "s";
+            }
+            return time;
+        }
+
+        /**
          * @return date of the game.
          */
         Date getDate() {
@@ -115,22 +131,6 @@ public class Highscores implements Serializable, RetainedFragment.Loadable{
 
         public String TimeToText() {
             return TimeToText(mTime);
-        }
-
-        /**
-         * Convert time to  string.
-         * @param time_array [0] - minutes, [1] - seconds.
-         * @return string "*minutes*m *seconds*s".
-         */
-        public static String TimeToText(int[] time_array) {
-            String time = "";
-            if (time_array[0] != 0) {
-                time += String.valueOf(time_array[0]) + "m ";
-            }
-            if (time_array[1] != 0) {
-                time += String.valueOf(time_array[1]) + "s";
-            }
-            return time;
         }
 
         /**

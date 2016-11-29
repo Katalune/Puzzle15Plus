@@ -3,6 +3,7 @@ package ua.pp.kata.puzzle15plus;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import ua.pp.kata.puzzle15plus.game.GameActivity;
 import ua.pp.kata.puzzle15plus.game.GameFragment;
 
 public class MainActivity extends AppCompatActivity implements GameFragment.GameFragmentListener, LevelFragment.LevelFragmentListener {
@@ -35,16 +37,8 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FragmentManager fm = getFragmentManager();
-        // find the retained fragment on activity restart
-        RetainedFragment retainedFragment = (RetainedFragment) fm.findFragmentByTag(RetainedFragment.TAG);
-        // create the retained fragment first time
-        if (retainedFragment == null) {
-            retainedFragment = new RetainedFragment();
-            fm.beginTransaction().add(retainedFragment, RetainedFragment.TAG).commit();
-        }
-
         // Set up member variables
+        StorageUtils.loadData(this);
         NavigationView drawerList = (NavigationView) findViewById(R.id.drawer_frame);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -89,9 +83,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
         if (savedInstanceState == null) {
             selectItem(R.id.nav_item_1);
         } else {
-            if (savedInstanceState.getBoolean(HIDDEN)) {
-                hideTitle();
-            } else {
+            if (!savedInstanceState.getBoolean(HIDDEN)) {
                 setTitle(savedInstanceState.getCharSequence(TITLE));
             }
         }
@@ -122,41 +114,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     // GameFragmentListener methods
     @Override
     public void onStartGameButtonClick() {
-        Fragment fragment = new GameFragment();
-        Bundle args = new Bundle();
-        args.putInt(GameFragment.STATE_INDEX, GameFragment.GAME_STATE); // start game
-        fragment.setArguments(args);
-
-        hideTitle();
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.animator.animation_come_in, R.animator.animation_come_out,
-                        R.animator.animation_pop_in, R.animator.animation_pop_out)
-                .replace(R.id.content_frame, fragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onPauseGameButtonClick() {
-        showTitle();
-        getFragmentManager().popBackStack();
-    }
-
-    private void hideTitle() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-            isHidden = true;
-        }
-    }
-
-    private void showTitle() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.show();
-            isHidden = false;
-        }
+        startActivity(new Intent(this, GameActivity.class));
     }
 
     // open start game screen after choosing new level
@@ -180,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
      * @param position selected position
      */
     private void selectItem(int position) {
+        FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new Fragment();
 
         switch(position) {
@@ -207,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
         }
 
         // switch the view
-        getFragmentManager()
+        fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.animator.menu_come_in, R.animator.menu_come_out,
                         R.animator.menu_come_in, R.animator.menu_come_out)
