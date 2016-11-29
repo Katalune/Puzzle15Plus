@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     private static final String TITLE = "title";
     private static final String HIDDEN = "is_toolbar_hidden";
     private DrawerLayout mDrawerLayout;
-    private boolean isHidden = false;
+    private NavigationView drawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +40,14 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
 
         // Set up member variables
         StorageUtils.loadData(this);
-        NavigationView drawerList = (NavigationView) findViewById(R.id.drawer_frame);
+        drawerList = (NavigationView) findViewById(R.id.drawer_frame);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Set up drawer's list view and click listener
         drawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                selectItem(item.getItemId());
+                selectItem(item);
                 return true;
             }
         });
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
 
 
         // Select item by default
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null) {// get menu from navigationView
             selectItem(R.id.nav_item_1);
         } else {
             if (!savedInstanceState.getBoolean(HIDDEN)) {
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence(TITLE, getTitle());
-        outState.putBoolean(HIDDEN, isHidden);
+        outState.putBoolean(HIDDEN, false);
     }
 
     // GameFragmentListener methods
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
     @Override
     public void onLevelButtonClick() {
         selectItem(R.id.nav_item_1);
-        setTitle();
     }
 
     private boolean setTitle() {
@@ -133,15 +131,17 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
         return false;
     }
 
-    /**
-     * Update the main content by replacing fragment with
-     * @param position selected position
-     */
-    private void selectItem(int position) {
+    private void selectItem(@IdRes int id) {
+        selectItem(drawerList.getMenu().findItem(id));
+    }
+
+    private void selectItem(MenuItem item) {
+        item.setChecked(true);
+        mDrawerLayout.closeDrawers();
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new Fragment();
 
-        switch(position) {
+        switch (item.getItemId()) {
             case R.id.nav_item_1:
                 // Game
                 fragment = new GameFragment();
@@ -173,4 +173,5 @@ public class MainActivity extends AppCompatActivity implements GameFragment.Game
                 .replace(R.id.content_frame, fragment)
                 .commit();
     }
+
 }
