@@ -83,6 +83,12 @@ public class GameActivity extends Activity {
         super.onPause();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     public GameController getGameController() {
         return gameController;
     }
