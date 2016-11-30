@@ -17,4 +17,7 @@
 
     <!--override fab size-->
     <dimen name="design_fab_size_normal">64dp</dimen>
+
+    <dimen name="tile_radius">16dp</dimen>
+    <dimen name="tile_elevation">8dp</dimen>
 </resources>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TextView
-        android:text="@string/level_title"
-        style="@style/screenTitle"/>
+        style="@style/screenTitle"
+        android:text="@string/level_title" />
 
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="#FCFBF7"
         android:choiceMode="singleChoice"
         android:clickable="true"
-        android:numColumns="auto_fit"
         android:columnWidth="@dimen/level_column_width"
-        android:background="#FCFBF7"
-        android:layout_margin="@dimen/activity_vertical_margin"/>
+        android:numColumns="auto_fit" />
 
 </LinearLayout>

@@ -31,7 +31,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textIsSelectable">false</item>
-        <item name="android:textSize">@dimen/abc_text_size_title_material</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="screenTitle">

@@ -6,13 +6,14 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ua.pp.kata.puzzle15plus.R;
+import ua.pp.kata.puzzle15plus.view.GameTile;
 
 /**
  * Handle the drawing of the views
@@ -21,11 +22,11 @@ class GameGUI {
     static final int ANIM_MILLIS = 400;
     private final View mMainLayout; // Main container
     private final LinearLayout mTimerLayout;
-    private final RelativeLayout mBoardLayout;
+    private final ViewGroup mBoardLayout;
     private final TextView mStepsView;
     private int mBoardSize;
     private Constants mConstants;
-    private View[] mTiles; // Tiles (mTiles[i] represent tile with number i
+    private GameTile[] mTiles; // Tiles (mTiles[i] represent tile with number i
     private float[][] mBoardPalette; // defines color in HSB format (3 columns) for all tiles.
 
 
@@ -39,7 +40,7 @@ class GameGUI {
 
         mMainLayout = LayoutInflater.from(context).inflate(R.layout.fragment_game, null);
         mTimerLayout = (LinearLayout) mMainLayout.findViewById(R.id.timerLayout);
-        mBoardLayout = (RelativeLayout) mMainLayout.findViewById(R.id.boardLayout);
+        mBoardLayout = (ViewGroup) mMainLayout.findViewById(R.id.boardLayout);
         mStepsView = (TextView) mMainLayout.findViewById(R.id.steps);
 
         mConstants = new Constants(context);
@@ -96,15 +97,15 @@ class GameGUI {
     private void createBoard(Context context, int[][] BOARD) {
         mBoardSize = BOARD.length;
         mBoardLayout.removeAllViews();
-        mTiles = new Button[mBoardSize * mBoardSize];
+        mTiles = new GameTile[mBoardSize * mBoardSize];
 
         for (int i = 0; i < mBoardSize; i++) {
             for (int j = 0; j < mBoardSize; j++) {
                 int tileNumber = BOARD[i][j];
-                Button temp = new Button(context);
+                GameTile temp = new GameTile(context);
                 temp.setLayoutParams(mConstants.tileParams); // set size of the tile
 
-                temp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mConstants.tileTextSize_DP);
+                temp.setTextSize(mConstants.tileTextSize_DP);
                 temp.setTextColor(Color.parseColor(Constants.bgColor));
                 temp.setPadding(0, 0, 0, 0);
                 temp.setText(Integer.toString(tileNumber));
@@ -149,7 +150,7 @@ class GameGUI {
     private void colorBoard(boolean inner) {
         final int LEN = mTiles.length;
         for (int i = 1; i < LEN; i++) {
-            mTiles[i].setBackgroundColor(Color.HSVToColor(mBoardPalette[i]));
+            mTiles[i].setTileBackgroundColor(Color.HSVToColor(mBoardPalette[i]));
         }
         mTiles[0].setVisibility(View.GONE);
     }
@@ -214,7 +215,7 @@ class GameGUI {
         mStepsView.setText(String.valueOf(steps));
     }
 
-    void moveTile(Button tile, int[] coordRC) {
+    void moveTile(View tile, int[] coordRC) {
         int index = tile.getId();
         tile.animate().setDuration(ANIM_MILLIS);
         tile.animate().setInterpolator(new  DecelerateInterpolator());
@@ -281,10 +282,10 @@ class GameGUI {
             timerPadding_PX = (int) (timerTextSize_DP * dpTOpx / 5);
 
             // board and tile const
-            board_scale = 0.9f; // scale the board
+            board_scale = 0.95f; // scale the board
             boardWidth_DP = screenWidth_DP * board_scale;
             // tile const
-            proportion = 10; // width of one tile equals proportion * margin
+            proportion = 15; // width of one tile equals proportion * margin
             tileMargin_DP = boardWidth_DP / (float)(mBoardSize * (proportion + 1) + 1);
             tileSize_PX = (int) (proportion * tileMargin_DP * dpTOpx);
             tileTextSize_DP = proportion * tileMargin_DP / 2;

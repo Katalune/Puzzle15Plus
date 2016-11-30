@@ -1,13 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:weightSum="3"
-    android:gravity="center_horizontal">
+    android:weightSum="3">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -15,13 +17,13 @@
         android:src="@android:drawable/btn_star_big_on" />
 
     <TextView
+        android:id="@+id/level"
         android:layout_width="@dimen/score_level_size"
         android:layout_height="@dimen/score_level_size"
-        android:id="@+id/level"
-        android:textStyle="bold"
+        android:gravity="center"
         android:textColor="#FCFBF7"
         android:textSize="@dimen/abc_text_size_title_material"
-        android:gravity="center"/>
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -30,28 +32,28 @@
 
     <TextView
         android:id="@+id/time"
-        android:text="2"
+        style="@style/scoreItem"
         android:layout_weight="1"
-        style="@style/scoreItem" />
+        tools:text="2" />
 
     <TextView
         android:id="@+id/steps"
-        android:text="3"
+        style="@style/scoreItem"
         android:layout_weight="1"
-        style="@style/scoreItem" />
+        tools:text="3" />
 
     <TextView
         android:id="@+id/date"
-        android:text="4"
-        android:textStyle="italic"
+        style="@style/scoreItem"
         android:layout_weight="1"
-        style="@style/scoreItem" />
+        android:textStyle="italic"
+        tools:text="4" />
 
     <ImageView
         android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@android:drawable/ic_menu_share"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_share" />
 
 </LinearLayout>

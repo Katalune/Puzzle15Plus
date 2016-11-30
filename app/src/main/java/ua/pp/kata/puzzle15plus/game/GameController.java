@@ -14,9 +14,7 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -252,7 +250,7 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
         mGui.updateLevel(mContext, mBoard.getBoard());
         mGui.setSteps(mBoard.getStepsNumber());
 
-        RelativeLayout boardLayout = (RelativeLayout) mGui.getMainLayout().findViewById(R.id.boardLayout);
+        ViewGroup boardLayout = (ViewGroup) mGui.getMainLayout().findViewById(R.id.boardLayout);
         for (int i = 0, size = boardLayout.getChildCount(); i < size; i++) {
             View v = boardLayout.getChildAt(i);
             v.setOnTouchListener(this);
@@ -290,7 +288,7 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
                 reset();
                 break;
             default:
-                mGui.moveTile((Button) v, mBoard.moveTile(v.getId()));
+                mGui.moveTile(v, mBoard.moveTile(v.getId()));
                 mGui.setSteps(mBoard.getStepsNumber());
                 if (mBoard.isWon()) {
                     // stop timer

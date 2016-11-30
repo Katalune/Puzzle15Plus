@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +87,7 @@ public class LevelFragment extends Fragment {
             }
             // set view content based on model data
             int level = levels.get(position);
-            Button b = (Button) convertView.findViewById(R.id.button);
+            TextView b = (TextView) convertView.findViewById(R.id.level_button);
             b.setText(String.valueOf(level));
             b.setBackgroundColor(Color.HSVToColor(mLevelsPalette[position]));
 
@@ -104,7 +104,7 @@ public class LevelFragment extends Fragment {
             // tag associated with the view is it's level
             int checkedLevel = (int) view.getTag();
             if (checkedLevel != mCurLevel) {
-                LinearLayout previous = (LinearLayout) parent.findViewWithTag(mCurLevel);
+                View previous = parent.findViewWithTag(mCurLevel);
                 previous.setBackgroundResource(0);
                 view.setBackgroundResource(R.drawable.frame);
                 mCurLevel = checkedLevel;

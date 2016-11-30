@@ -7,15 +7,15 @@
             android:icon="@drawable/ic_1_grid"
             android:title="@string/nav_1" />
         <item
-            android:id="@+id/nav_item_2"
-            android:checked="true"
-            android:icon="@drawable/ic_2_star"
-            android:title="@string/nav_2" />
-        <item
             android:id="@+id/nav_item_3"
             android:checked="true"
             android:icon="@drawable/ic_3_settings"
             android:title="@string/nav_3" />
+        <item
+            android:id="@+id/nav_item_2"
+            android:checked="true"
+            android:icon="@drawable/ic_2_star"
+            android:title="@string/nav_2" />
         <item
             android:id="@+id/nav_item_4"
             android:checked="true"
