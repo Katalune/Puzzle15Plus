@@ -10,7 +10,7 @@ import ua.pp.kata.puzzle15plus.MainActivity;
 import ua.pp.kata.puzzle15plus.R;
 import ua.pp.kata.puzzle15plus.StorageUtils;
 
-import static ua.pp.kata.puzzle15plus.game.GameFragment.DEF_DIM;
+import static ua.pp.kata.puzzle15plus.GameFragment.DEF_DIM;
 
 public class GameActivity extends Activity {
 

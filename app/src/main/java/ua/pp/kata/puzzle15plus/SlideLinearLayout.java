@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-/**
- * Created by Kata on 02.08.2015.
- */
 public class SlideLinearLayout extends LinearLayout {
     public static final int ERROR = -9999;
 

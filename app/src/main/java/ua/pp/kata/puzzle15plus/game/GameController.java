@@ -13,9 +13,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,7 +30,7 @@ import ua.pp.kata.puzzle15plus.StorageUtils;
  * Create game view and game model. Set OnTouchListeners on board tiles and timer.
  */
 class GameController implements GreetingDialogFragment.GreetingDialogListener,
-        View.OnTouchListener {
+        View.OnTouchListener, View.OnClickListener {
     static final String GREETING = "greeting";
     private GameModel mBoard;
     private GameGUI mGui;
@@ -80,12 +80,12 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
         mGui.setSteps(mBoard.getStepsNumber());
         mSharedPref = StorageUtils.getPrefs(mContext);
         mStartTime = SystemClock.uptimeMillis() - mSpentTime; // add to the whole period previous time
-        RelativeLayout boardLayout = (RelativeLayout) mGui.getMainLayout().findViewById(R.id.boardLayout);
+        ViewGroup boardLayout = (ViewGroup) mGui.getMainLayout().findViewById(R.id.boardLayout);
         for (int i = 0, size = boardLayout.getChildCount(); i < size; i++) {
             View v = boardLayout.getChildAt(i);
             v.setOnTouchListener(this);
         }
-        mGui.getMainLayout().findViewById(R.id.restart).setOnTouchListener(this);
+        mGui.getMainLayout().findViewById(R.id.restart).setOnClickListener(this);
 
         updateTimer = new Runnable() {
             @Override
@@ -131,7 +131,7 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
      * @return The screenshot.
      */
     private Bitmap takeScreenshot() {
-        LinearLayout v1 = mGui.getMainLayout();
+        View v1 = mGui.getMainLayout();
         v1.setDrawingCacheEnabled(true);
         Bitmap bitmapParent = Bitmap.createBitmap(v1.getDrawingCache());
         v1.setDrawingCacheEnabled(false);
@@ -185,7 +185,7 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
         return mSpentTime;
     }
 
-    LinearLayout getView() {
+    View getView() {
         return mGui.getMainLayout();
     }
 
@@ -283,10 +283,10 @@ class GameController implements GreetingDialogFragment.GreetingDialogListener,
         return false;
     }
 
-    private void onClick(View v) {
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.restart:
-                v.animate().rotationBy(-360);
+//                v.animate().rotationBy(-360);
                 reset();
                 break;
             default:

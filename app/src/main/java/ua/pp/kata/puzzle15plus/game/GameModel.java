@@ -1,23 +1,25 @@
 package ua.pp.kata.puzzle15plus.game;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Handle the board model
  */
-public class GameModel implements Serializable{
+class GameModel implements Serializable {
     private int[][] mBoard; // board, whereby board[i][j] represents tile in row i and column j
     private int mStepsNumber; // Number of steps made so far
     private int mBlank_tile_R, mBlank_tile_C; // coordinates of blank tile
-    private int[] mWinningState;
+    private int[] winningState;
 
     /**
      * Create the board.
+     *
      * @param DIMENSION size of the board.
      */
-    public GameModel(final int DIMENSION) {
+    GameModel(final int DIMENSION) {
         mStepsNumber = 0;
 
         fillWinningState(DIMENSION);
@@ -26,10 +28,11 @@ public class GameModel implements Serializable{
 
     /**
      * Recreat game model from existing parameters
-     * @param board board model
-     * @param steps number of steps already done in the game
-     * @param blank_tileR row of the blank tile
-     * @param blank_tileC column of the blank tile
+     *
+     * @param board        board model
+     * @param steps        number of steps already done in the game
+     * @param blank_tileR  row of the blank tile
+     * @param blank_tileC  column of the blank tile
      * @param winningState board representing the winning state
      */
     public GameModel(int[][] board, int steps, int blank_tileR, int blank_tileC, int[] winningState) {
@@ -37,12 +40,13 @@ public class GameModel implements Serializable{
         this.mStepsNumber = steps;
         this.mBlank_tile_R = blank_tileR;
         this.mBlank_tile_C = blank_tileC;
-        this.mWinningState = winningState;
+        this.winningState = winningState;
     }
 
     /**
      * Attempt to move the tile.
-     * @param row current row position
+     *
+     * @param row    current row position
      * @param column current column position
      * @return row and column of the target position, return {-1, -1} if tile doesn't move
      */
@@ -50,28 +54,29 @@ public class GameModel implements Serializable{
         if (isBlankTile(row + 1, column)) {
             swapTiles(row, column, row + 1, column);
 //            return DOWN;
-            return new int[] {row + 1, column};
+            return new int[]{row + 1, column};
         }
         if (isBlankTile(row - 1, column)) {
             swapTiles(row, column, row - 1, column);
 //            return UP;
-            return new int[] {row - 1, column};
+            return new int[]{row - 1, column};
         }
         if (isBlankTile(row, column + 1)) {
             swapTiles(row, column, row, column + 1);
 //            return RIGHT;
-            return new int[] {row, column + 1};
+            return new int[]{row, column + 1};
         }
         if (isBlankTile(row, column - 1)) {
             swapTiles(row, column, row, column - 1);
 //            return LEFT;
-            return new int[] {row, column - 1};
+            return new int[]{row, column - 1};
         }
-        return new int[] {-1, -1};
+        return new int[]{-1, -1};
     }
 
     /**
      * Attempt to move the tile.
+     *
      * @param index index number of the tile
      * @return direction in which movement was made
      */
@@ -85,11 +90,11 @@ public class GameModel implements Serializable{
      */
     boolean isWon() {
         int[][] board = getBoard();
-        int size = mWinningState.length;
+        int size = winningState.length;
         for (int i = 0, dim = board.length; i < size; i++) {
             int row = i / dim;
             int col = i % dim;
-            if (board[row][col] != mWinningState[i]) {
+            if (board[row][col] != winningState[i]) {
                 return false;
             }
         }
@@ -98,7 +103,7 @@ public class GameModel implements Serializable{
 
     /**
      * @param sequence of numbers to form a board of
-     * @param DIM dimension
+     * @param DIM      dimension
      * @return if the chosen board is solvable
      */
     private boolean isSolvable(final int[] sequence, final int DIM) {
@@ -118,7 +123,7 @@ public class GameModel implements Serializable{
             }
         }
         // the low bit will always be set on an odd number
-        if ( (DIM & 1) != 0 ) { // odd board size
+        if ((DIM & 1) != 0) { // odd board size
             return (inversions & 1) == 0; // is the even number of inversions?
         } else { // even board size
             int sum = mBlank_tile_R + inversions;
@@ -128,6 +133,7 @@ public class GameModel implements Serializable{
 
     /**
      * Fill array with numbers in the winning order for the board.
+     *
      * @param dim dimension of the board
      */
     private void fillWinningState(int dim) {
@@ -142,6 +148,7 @@ public class GameModel implements Serializable{
 
     /**
      * Fill board with the random solvable number combination
+     *
      * @param DIMENSION dimension of the created board
      */
     private void fillRandomBoard(final int DIMENSION) {
@@ -150,25 +157,22 @@ public class GameModel implements Serializable{
         int[] boardState = new int[SIZE];
 
         // find solvable combination
+        List<Integer> numbers = new LinkedList<>();
         do {
-            int size = mWinningState.length;
-            ArrayList<Integer> numbers = new ArrayList<>(size);
-            for (int i = 0; i < size; i++) {
-                numbers.add(mWinningState[i]);
+            numbers.clear();
+            for (int aWinningState : winningState) {
+                numbers.add(aWinningState);
             }
 
             // fill temp array with random numbers
+            Random generator = new Random();
             for (int i = 0; i < SIZE; i++) {
-                Random generator = new Random();
-                int random = generator.nextInt(numbers.size());
-                boardState[i] = numbers.remove(random);
+                boardState[i] = numbers.remove(generator.nextInt(numbers.size()));
 
                 if (boardState[i] == 0) { // blank tile
                     mBlank_tile_R = i / DIMENSION; // need to isSolvable method
                 }
             }
-
-
         } while (!isSolvable(boardState, DIMENSION));
 
         // fill the board
@@ -194,16 +198,17 @@ public class GameModel implements Serializable{
      * @param c column coordinate
      * @return if the tile with given coordinates is the blank tile
      */
-    private boolean isBlankTile (int r, int c) {
+    private boolean isBlankTile(int r, int c) {
         return r == mBlank_tile_R && c == mBlank_tile_C;
     }
 
     /**
      * Swap tiles with the given coordinates on the board. Second tile is the blank tile.
+     *
      * @param fromR row of the first tile
      * @param fromC column of the first tile
-     * @param toR row of the second tile
-     * @param toC column of the second tile
+     * @param toR   row of the second tile
+     * @param toC   column of the second tile
      */
     private void swapTiles(int fromR, int fromC, int toR, int toC) {
         // update board
@@ -223,6 +228,7 @@ public class GameModel implements Serializable{
 
     /**
      * Find the tile on the board.
+     *
      * @param index number on the tile.
      * @return array with row and column of the tile, [-1][-1] if not found.
      */
@@ -245,7 +251,7 @@ public class GameModel implements Serializable{
         return coordinates;
     }
 
-    public int[][] getBoard() {
+    int[][] getBoard() {
         return mBoard;
     }
 
@@ -254,18 +260,10 @@ public class GameModel implements Serializable{
     }
 
     private void setWinningState(int[] state) {
-        mWinningState = state;
-    }
-
-    int[] getWinningState() {
-        return mWinningState;
+        winningState = state;
     }
 
     int getStepsNumber() {
         return mStepsNumber;
-    }
-
-    int[] getBlankTileRC() {
-        return new int[] {mBlank_tile_R, mBlank_tile_C};
     }
 }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ua.pp.kata.puzzle15plus.game.GameColor;
-import ua.pp.kata.puzzle15plus.game.GameFragment;
 
 
 public class LevelFragment extends Fragment {

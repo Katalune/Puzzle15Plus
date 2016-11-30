@@ -17,9 +17,9 @@ import ua.pp.kata.puzzle15plus.R;
 /**
  * Handle the drawing of the views
  */
-public class GameGUI {
-    public static final int ANIM_MILLIS = 400;
-    private final LinearLayout mMainLayout; // Main container
+class GameGUI {
+    static final int ANIM_MILLIS = 400;
+    private final View mMainLayout; // Main container
     private final LinearLayout mTimerLayout;
     private final RelativeLayout mBoardLayout;
     private final TextView mStepsView;
@@ -34,10 +34,10 @@ public class GameGUI {
      * @param context - view's context
      * @param board - array of board numbers.
      */
-    public GameGUI(Context context, final int[][] board) {
+    GameGUI(Context context, final int[][] board) {
         mBoardSize = board.length;
 
-        mMainLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.fragment_game, null);
+        mMainLayout = LayoutInflater.from(context).inflate(R.layout.fragment_game, null);
         mTimerLayout = (LinearLayout) mMainLayout.findViewById(R.id.timerLayout);
         mBoardLayout = (RelativeLayout) mMainLayout.findViewById(R.id.boardLayout);
         mStepsView = (TextView) mMainLayout.findViewById(R.id.steps);
@@ -93,7 +93,7 @@ public class GameGUI {
         colorBoard();
     }
 
-    void createBoard(Context context, int[][] BOARD) {
+    private void createBoard(Context context, int[][] BOARD) {
         mBoardSize = BOARD.length;
         mBoardLayout.removeAllViews();
         mTiles = new Button[mBoardSize * mBoardSize];
@@ -183,13 +183,13 @@ public class GameGUI {
      * @param row row of the tile in the board
      * @param col column of the tile in the board
      */
-    float[] convertTileRC_ToXY(int row, int col) {
+    private float[] convertTileRC_ToXY(int row, int col) {
         float y = mConstants.tileMargin_DP * (1 + (mConstants.proportion + 1) * row) * mConstants.dpTOpx;
         float x = mConstants.tileMargin_DP * (1 + (mConstants.proportion + 1) * col) * mConstants.dpTOpx;
         return new float[] {x, y};
     }
 
-    LinearLayout getMainLayout(){
+    View getMainLayout() {
         return mMainLayout;
     }
 
@@ -261,14 +261,6 @@ public class GameGUI {
 
         Constants(Context context) {
 
-            // Calculate ActionBar height
-            int actionBarHeight = 0;
-            TypedValue tv = new TypedValue();
-            if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-            {
-                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,
-                        context.getResources().getDisplayMetrics());
-            }
             // screen const
             dpTOpx = context.getResources().getDisplayMetrics().density;
             screenWidth_DP = (int) ((Math.min(context.getResources().getDisplayMetrics().widthPixels,

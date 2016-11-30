@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.Window;
 
 import ua.pp.kata.puzzle15plus.game.GameActivity;
-import ua.pp.kata.puzzle15plus.game.GameFragment;
 
 public class MainActivity extends AppCompatActivity implements GameFragment.GameFragmentListener, LevelFragment.LevelFragmentListener {
     public static final String CUR_DIM = "current_dimension";

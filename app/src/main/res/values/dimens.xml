@@ -14,4 +14,7 @@
 
     <!-- Drawer list width. -->
     <dimen name="menu_width">250dp</dimen>
+
+    <!--override fab size-->
+    <dimen name="design_fab_size_normal">64dp</dimen>
 </resources>

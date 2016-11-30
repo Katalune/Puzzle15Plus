@@ -1,4 +1,4 @@
-package ua.pp.kata.puzzle15plus.game;
+package ua.pp.kata.puzzle15plus;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import ua.pp.kata.puzzle15plus.R;
 
 /**
  * Represent starting screen or game screen.
